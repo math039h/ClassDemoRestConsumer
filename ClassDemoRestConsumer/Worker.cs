@@ -11,7 +11,7 @@ namespace ClassDemoRestConsumer
     internal class Worker
     {
 
-        private const string URI = "http://localhost:50935/api/Hotels";
+        private const string URI = "http://localhost:50935/api/Facilitet";
 
         public Worker()
         {
@@ -19,41 +19,41 @@ namespace ClassDemoRestConsumer
 
         public void Start()
         {
-            List<Hotel> hotels = GetAll();
+            List<Facilitet> hotels = GetAll();
 
             foreach (var hotel in hotels)
             {
-                Console.WriteLine("Hotel:: " + hotel);
+                Console.WriteLine("Facilitet:: " + hotel.Name);
             }
 
-            Console.WriteLine("Henter nummer 55");
-            Console.WriteLine("Hotel :: " + GetOne(55));
+            Console.WriteLine("Henter nummer 2");
+            Console.WriteLine("Facilitet :: " + GetOne(2));
 
 
-            Console.WriteLine("Sletter nummer 55");
-            Console.WriteLine("Resultat = " + Delete(55));
+            Console.WriteLine("Sletter nummer 2");
+            Console.WriteLine("Resultat = " + Delete(2));
 
-            Console.WriteLine("Opretter nyt hotel object id findes ");
-            Console.WriteLine("Resultat = " + Post(new Hotel(5, "Findes", "vej3")));
+            Console.WriteLine("Opretter nyt Facilitet object id findes ");
+            Console.WriteLine("Resultat = " + Post(new Facilitet(){Facilitetnr = 1, Name = "Lagkage"}));
 
             Console.WriteLine("Opretter nyt hotel object id findes ikke");
-            Console.WriteLine("Resultat = " + Post(new Hotel(49, "Findes ikke", "vej3")));
+            Console.WriteLine("Resultat = " + Post(new Facilitet(){Facilitetnr = 2, Name = "Bold Tennis"}));
 
             Console.WriteLine("Opdaterer nr 50");
-            Console.WriteLine("Resultat = " + Put(50, new Hotel(50, "Pouls", "Hillerød")));
+            Console.WriteLine("Resultat = " + Put(2, new Facilitet(){ Facilitetnr = 2, Name = "Bord Tennis"}));
         }
 
 
-        private List<Hotel> GetAll()
+        private List<Facilitet> GetAll()
         {
-            List<Hotel> hoteller = new List<Hotel>();
+            List<Facilitet> hoteller = new List<Facilitet>();
 
             using (HttpClient client = new HttpClient())
             {
                 Task<string> resTask = client.GetStringAsync(URI);
                 String jsonStr = resTask.Result;
 
-                hoteller = JsonConvert.DeserializeObject<List<Hotel>>(jsonStr);
+                hoteller = JsonConvert.DeserializeObject<List<Facilitet>>(jsonStr);
             }
 
 
@@ -62,16 +62,16 @@ namespace ClassDemoRestConsumer
         
 
 
-        private Hotel GetOne(int id)
+        private Facilitet GetOne(int id)
         {
-            Hotel hotel = new Hotel();
+            Facilitet hotel = new Facilitet();
 
             using (HttpClient client = new HttpClient())
             {
                 Task<string> resTask = client.GetStringAsync(URI + "/" + id);
                 String jsonStr = resTask.Result;
 
-                hotel = JsonConvert.DeserializeObject<Hotel>(jsonStr);
+                hotel = JsonConvert.DeserializeObject<Facilitet>(jsonStr);
             }
 
 
@@ -102,7 +102,7 @@ namespace ClassDemoRestConsumer
             return ok;
         }
 
-        private bool Post(Hotel hotel)
+        private bool Post(Facilitet hotel)
         {
             bool ok = true;
 
@@ -129,7 +129,7 @@ namespace ClassDemoRestConsumer
             return ok;
         }
 
-        private bool Put(int id, Hotel hotel)
+        private bool Put(int id, Facilitet hotel)
         {
             bool ok = true;
 
